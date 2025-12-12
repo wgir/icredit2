@@ -1,4 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface User {
@@ -10,6 +14,9 @@ export interface User {
     providedIn: 'root'
 })
 export class AuthService {
+    private platformId = inject(PLATFORM_ID);
+    private isBrowser = isPlatformBrowser(this.platformId);
+
     // Signal to track authentication state
     private isAuthenticatedSignal = signal<boolean>(false);
     private currentUserSignal = signal<User | null>(null);
@@ -18,12 +25,14 @@ export class AuthService {
     readonly isAuthenticated = this.isAuthenticatedSignal.asReadonly();
     readonly currentUser = this.currentUserSignal.asReadonly();
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private http: HttpClient) {
         // Check if user is already logged in (from localStorage)
         this.checkAuthStatus();
     }
 
     private checkAuthStatus(): void {
+        if (!this.isBrowser) return;
+
         const token = localStorage.getItem('auth_token');
         const userStr = localStorage.getItem('current_user');
 
@@ -38,31 +47,34 @@ export class AuthService {
         }
     }
 
-    login(username: string, password: string): boolean {
-        // Mock authentication - in real app, call backend API
-        if (username && password) {
-            const user: User = {
-                username: username,
-                email: `${username}@example.com`
-            };
+    login(email: string, password: string): Observable<any> {
+        const url = '/v1/auth/login';
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        const body = { email, password };
 
-            // Store auth data
-            localStorage.setItem('auth_token', 'mock-jwt-token-' + Date.now());
-            localStorage.setItem('current_user', JSON.stringify(user));
+        return this.http.post<any>(url, body, { headers }).pipe(
+            tap(response => {
+                // Assuming the response contains a token and potentially user details
+                // Adjust this based on actual backend response structure
+                if (this.isBrowser && response.token) {
+                    localStorage.setItem('auth_token', response.token);
+                    if (response.user) {
+                        localStorage.setItem('current_user', JSON.stringify(response.user));
+                        this.currentUserSignal.set(response.user);
+                    }
+                }
 
-            // Update signals
-            this.isAuthenticatedSignal.set(true);
-            this.currentUserSignal.set(user);
-
-            return true;
-        }
-        return false;
+                this.isAuthenticatedSignal.set(true);
+            })
+        );
     }
 
     logout(): void {
-        // Clear auth data
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('current_user');
+        // Clear auth data (only in browser)
+        if (this.isBrowser) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('current_user');
+        }
 
         // Update signals
         this.isAuthenticatedSignal.set(false);
@@ -73,6 +85,7 @@ export class AuthService {
     }
 
     getToken(): string | null {
+        if (!this.isBrowser) return null;
         return localStorage.getItem('auth_token');
     }
 }

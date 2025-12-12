@@ -37,7 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        userUuid = jwtService.extractUsername(jwt); // This extracts 'sub' claim
+        String subject = jwtService.extractUsername(jwt); // This extracts 'sub' claim
+        if (subject != null && subject.contains("|")) {
+            userUuid = subject.split("\\|")[0];
+        } else {
+            userUuid = subject;
+        }
 
         if (userUuid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Load user by UUID (handled by CustomUserDetailsService)

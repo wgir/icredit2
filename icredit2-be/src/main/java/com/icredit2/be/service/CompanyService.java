@@ -6,7 +6,6 @@ import com.icredit2.be.domain.repository.CompanyRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,6 @@ public class CompanyService {
         return new CompanyDtos.CompanyResponse(
                 company.getId(),
                 company.getName(),
-                company.getDomain(),
                 company.getCreatedAt());
     }
 }

@@ -21,7 +21,7 @@ export class LoginComponent {
 
     constructor() {
         this.loginForm = this.fb.group({
-            username: ['', [Validators.required, Validators.minLength(3)]],
+            email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(4)]]
         });
     }
@@ -31,27 +31,26 @@ export class LoginComponent {
             this.isLoading.set(true);
             this.errorMessage.set('');
 
-            const { username, password } = this.loginForm.value;
+            const { email, password } = this.loginForm.value;
 
-            // Simulate API call delay
-            setTimeout(() => {
-                const success = this.authService.login(username, password);
-
-                if (success) {
+            this.authService.login(email, password).subscribe({
+                next: () => {
+                    this.isLoading.set(false);
                     this.router.navigate(['/dashboard']);
-                } else {
-                    this.errorMessage.set('Invalid credentials. Please try again.');
+                },
+                error: (err) => {
+                    console.error('Login error', err);
+                    this.errorMessage.set('Invalid credentials or server error. Please try again.');
+                    this.isLoading.set(false);
                 }
-
-                this.isLoading.set(false);
-            }, 500);
+            });
         } else {
             this.errorMessage.set('Please fill in all required fields.');
         }
     }
 
-    get username() {
-        return this.loginForm.get('username');
+    get email() {
+        return this.loginForm.get('email');
     }
 
     get password() {

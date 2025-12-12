@@ -29,15 +29,8 @@ public class Company {
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
-
-    @Column(name = "domain", nullable = false, unique = true)
-    private String domain;
-
-    @jakarta.persistence.Lob
-    @Column(name = "metadata", columnDefinition = "TEXT")
-    private String metadata; // Storing as JSON string in TEXT column
 
     @CreationTimestamp
     @Column(columnDefinition = "DATETIME")

@@ -10,28 +10,26 @@ import java.util.UUID;
 
 public class CompanyDtos {
 
-    public record CompanyRegistrationRequest(
-            @NotBlank String name,
-            String domain,
-            @NotNull @Valid CompanyOwnerRequest owner) {
-    }
+        public record CompanyRegistrationRequest(
+                        @NotBlank String name,
+                        @NotNull @Valid CompanyOwnerRequest owner) {
+        }
 
-    public record CompanyOwnerRequest(
-            @NotBlank @Email String email,
-            @NotBlank String password,
-            @JsonProperty("display_name") @NotBlank String displayName) {
-    }
+        public record CompanyOwnerRequest(
+                        @NotBlank @Email String email,
+                        @NotBlank String password,
+                        @JsonProperty("display_name") @NotBlank String displayName) {
+        }
 
-    public record CompanyResponse(
-            UUID id,
-            String name,
-            String domain,
-            @JsonProperty("created_at") LocalDateTime createdAt) {
-    }
+        public record CompanyResponse(
+                        UUID id,
+                        String name,
+                        @JsonProperty("created_at") LocalDateTime createdAt) {
+        }
 
-    public record CompanyRegistrationResponse(
-            CompanyResponse company,
-            UserDtos.UserResponse owner,
-            AuthDtos.AuthResponse tokens) {
-    }
+        public record CompanyRegistrationResponse(
+                        CompanyResponse company,
+                        UserDtos.UserResponse owner,
+                        AuthDtos.AuthResponse tokens) {
+        }
 }

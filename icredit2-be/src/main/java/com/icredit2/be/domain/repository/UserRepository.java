@@ -9,6 +9,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmailAndCompanyId(String email, UUID companyId);
 
+    Optional<User> findByEmail(String email);
+
     boolean existsByEmailAndCompanyId(String email, UUID companyId);
 
     List<User> findByCompanyId(UUID companyId);

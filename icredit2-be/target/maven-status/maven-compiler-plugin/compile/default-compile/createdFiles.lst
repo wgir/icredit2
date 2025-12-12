@@ -13,7 +13,6 @@ com\icredit2\be\domain\model\RefreshToken.class
 com\icredit2\be\domain\model\Role.class
 com\icredit2\be\api\dto\AuthDtos$RefreshTokenRequest.class
 com\icredit2\be\api\exception\ErrorResponse.class
-com\icredit2\be\config\DeclarationOrderColumnOrderingStrategy.class
 com\icredit2\be\api\controller\RoleController.class
 com\icredit2\be\security\SecurityConfig.class
 com\icredit2\be\api\dto\UserDtos.class

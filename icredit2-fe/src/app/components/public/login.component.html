@@ -21,22 +21,22 @@
 
                     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                            <label for="email" class="form-label">Email</label>
                             <div class="input-group">
                                 <span class="input-group-text">
-                                    <i class="bi bi-person"></i>
+                                    <i class="bi bi-envelope"></i>
                                 </span>
-                                <input type="text" class="form-control" id="username" formControlName="username"
-                                    placeholder="Enter your username"
-                                    [class.is-invalid]="username?.invalid && username?.touched">
+                                <input type="email" class="form-control" id="email" formControlName="email"
+                                    placeholder="Enter your email"
+                                    [class.is-invalid]="email?.invalid && email?.touched">
                             </div>
-                            @if (username?.invalid && username?.touched) {
+                            @if (email?.invalid && email?.touched) {
                             <div class="invalid-feedback d-block">
-                                @if (username?.errors?.['required']) {
-                                Username is required
+                                @if (email?.errors?.['required']) {
+                                Email is required
                                 }
-                                @if (username?.errors?.['minlength']) {
-                                Username must be at least 3 characters
+                                @if (email?.errors?.['email']) {
+                                Please enter a valid email address
                                 }
                             </div>
                             }
@@ -79,7 +79,7 @@
 
                     <div class="text-center mt-4">
                         <p class="text-muted small">
-                            Demo credentials: Any username and password (min 3 and 4 characters)
+                            Demo credentials: Use a registered email and password
                         </p>
                     </div>
                 </div>

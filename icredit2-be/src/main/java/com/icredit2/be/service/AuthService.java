@@ -45,17 +45,16 @@ public class AuthService {
     @SuppressWarnings("null")
     public CompanyDtos.CompanyRegistrationResponse registerCompany(CompanyDtos.CompanyRegistrationRequest request) {
         // 1. Create Company
-        if (request.domain() != null && companyRepository.existsByDomain(request.domain())) {
-            throw new ResourceConflictException("Company domain already exists");
-        }
-
         if (userRepository.existsByEmail(request.owner().email().toLowerCase())) {
             throw new ResourceConflictException("Email already registered");
         }
 
+        if (companyRepository.existsByName(request.name().toLowerCase())) {
+            throw new ResourceConflictException("Company name already exists");
+        }
+
         Company newCompany = Company.builder()
-                .name(request.name())
-                .domain(request.domain())
+                .name(request.name().toLowerCase())
                 .build();
         Company company = companyRepository.save(newCompany);
 
@@ -85,7 +84,7 @@ public class AuthService {
 
         // 5. Response
         return new CompanyDtos.CompanyRegistrationResponse(
-                new CompanyDtos.CompanyResponse(company.getId(), company.getName(), company.getDomain(),
+                new CompanyDtos.CompanyResponse(company.getId(), company.getName(),
                         company.getCreatedAt()),
                 new UserDtos.UserResponse(
                         owner.getId(),
@@ -100,30 +99,13 @@ public class AuthService {
     }
 
     public AuthDtos.AuthResponse login(AuthDtos.LoginRequest request) {
-        String companyIdentifier = request.companyDomain() != null ? request.companyDomain() : request.companyId();
-        if (companyIdentifier == null) {
-            throw new IllegalArgumentException("Company identifier (domain or id) is required");
-        }
-
-        // This relies on CustomUserDetailsService parsing "email|company"
-        String compositeUsername = request.email() + "|" + companyIdentifier;
-
+        // Since emails are globally unique, we can authenticate with email only
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(compositeUsername, request.password()));
+                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
         // If auth successful, load user to generate tokens
-        // We know CustomUserDetailsService handles this format, so we can use it, or do
-        // a manual lookup.
-        // Let's do manual lookup to be efficient and safe.
-        Company company = null;
-        if (isValidUUID(companyIdentifier)) {
-            company = companyRepository.findById(UUID.fromString(companyIdentifier)).orElseThrow();
-        } else {
-            company = companyRepository.findByDomain(companyIdentifier).orElseThrow();
-        }
-
-        User user = userRepository.findByEmailAndCompanyId(request.email(), company.getId())
-                .orElseThrow();
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
@@ -150,14 +132,5 @@ public class AuthService {
                 .build();
         refreshTokenRepository.save(rt);
         return token;
-    }
-
-    private boolean isValidUUID(String str) {
-        try {
-            UUID.fromString(str);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 }
