@@ -1,1 +1,3 @@
+help me to define a prompt to Build a frontend application that helps with standard sections header, navigation bar, login, content. The system must have header section with logo in left side, navigation bar with links to home, products, about us, Home, Products and About us sections must be public and At user log in to system must take user to another screen with header and vertical menu and content. (this generated Requirements.md)
+
 Buid a front angular application taking as reference the file Requirements.md and following the rules defined  in Rules.md

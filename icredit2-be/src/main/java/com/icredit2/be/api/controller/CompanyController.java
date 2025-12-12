@@ -19,7 +19,6 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     public ResponseEntity<CompanyDtos.CompanyResponse> getCompany(@PathVariable UUID companyId) {
-        // TODO: Validate auth user belongs to companyId
         return ResponseEntity.ok(companyService.getCompany(companyId));
     }
 }

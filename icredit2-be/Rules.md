@@ -51,7 +51,7 @@
 - Flyway/Liquibase for migrations
 
 ## Configuration:
-- application.properties / application.yml
+- application.yml
 - Profiles (dev, test, prod)
 - @ConfigurationProperties for type-safe config
 - @Value for simple injection
