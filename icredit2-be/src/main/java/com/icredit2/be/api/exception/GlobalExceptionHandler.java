@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "An unexpected error occurred", // Avoid exposing internal traces in production
                 null);
-        log.error("Unhandled exception", ex);
+        log.error("Unhandled exception", ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
