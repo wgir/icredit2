@@ -1,0 +1,155 @@
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 fw-bold">Profile</h1>
+            <p class="text-muted">Manage your account information</p>
+        </div>
+    </div>
+
+    @if (successMessage()) {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        {{ successMessage() }}
+    </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">Personal Information</h5>
+                    @if (!isEditing()) {
+                    <button class="btn btn-primary btn-sm" (click)="toggleEdit()">
+                        <i class="bi bi-pencil me-1"></i>
+                        Edit Profile
+                    </button>
+                    }
+                </div>
+                <div class="card-body p-4">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" formControlName="username">
+                                <small class="text-muted">Username cannot be changed</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" formControlName="email"
+                                    [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                                @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" formControlName="phone"
+                                    placeholder="1234567890"
+                                    [class.is-invalid]="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
+                                @if (profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+                                <div class="invalid-feedback">
+                                    Please enter a valid 10-digit phone number
+                                </div>
+                                }
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" formControlName="address"
+                                    placeholder="Enter your address">
+                            </div>
+                        </div>
+
+                        @if (isEditing()) {
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid">
+                                <i class="bi bi-check-lg me-1"></i>
+                                Save Changes
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+                                <i class="bi bi-x-lg me-1"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        }
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 fw-bold">Account Settings</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div>
+                            <h6 class="mb-1">Change Password</h6>
+                            <p class="text-muted small mb-0">Update your password regularly for security</p>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm">Change</button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div>
+                            <h6 class="mb-1">Two-Factor Authentication</h6>
+                            <p class="text-muted small mb-0">Add an extra layer of security</p>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm">Enable</button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1 text-danger">Delete Account</h6>
+                            <p class="text-muted small mb-0">Permanently delete your account</p>
+                        </div>
+                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="profile-avatar bg-primary bg-gradient text-white rounded-circle mx-auto mb-3"
+                        style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-person-circle" style="font-size: 5rem;"></i>
+                    </div>
+                    @if (authService.currentUser(); as user) {
+                    <h5 class="fw-bold mb-1">{{ user.username }}</h5>
+                    <p class="text-muted mb-3">{{ user.email }}</p>
+                    }
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-camera me-1"></i>
+                        Change Photo
+                    </button>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h6 class="mb-0 fw-bold">Account Status</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Member Since</small>
+                        <strong>December 2025</strong>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Account Type</small>
+                        <span class="badge bg-primary">Premium</span>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block mb-1">Verification Status</small>
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Verified
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

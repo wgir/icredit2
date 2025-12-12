@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-header text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary">Our Products</h1>
+                <p class="lead text-muted">Choose the perfect financial solution for your needs</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @for (product of products(); track product.id) {
+        <div class="col-md-6 col-lg-6">
+            <div class="card h-100 shadow-sm border-0 product-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">{{ product.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-muted mb-3">{{ product.description }}</p>
+                    <div class="rate-badge bg-success text-white rounded-pill px-3 py-2 d-inline-block mb-3">
+                        <strong>Starting at {{ product.rate }}</strong>
+                    </div>
+                    <h6 class="mt-3 mb-2">Key Features:</h6>
+                    <ul class="list-unstyled">
+                        @for (feature of product.features; track feature) {
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            {{ feature }}
+                        </li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-3">
+                    <button class="btn btn-primary w-100">Learn More</button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Need help choosing?
+                </h5>
+                <p class="mb-0">Our financial advisors are ready to help you find the perfect product.
+                    <a routerLink="/login" class="alert-link">Sign in</a> to get personalized recommendations.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card card shadow-lg border-0 mt-5">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="login-icon bg-primary bg-gradient text-white rounded-circle mx-auto mb-3"
+                            style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person-circle fs-1"></i>
+                        </div>
+                        <h2 class="fw-bold">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your account</p>
+                    </div>
+
+                    @if (errorMessage()) {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ errorMessage() }}
+                    </div>
+                    }
+
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" class="form-control" id="username" formControlName="username"
+                                    placeholder="Enter your username"
+                                    [class.is-invalid]="username?.invalid && username?.touched">
+                            </div>
+                            @if (username?.invalid && username?.touched) {
+                            <div class="invalid-feedback d-block">
+                                @if (username?.errors?.['required']) {
+                                Username is required
+                                }
+                                @if (username?.errors?.['minlength']) {
+                                Username must be at least 3 characters
+                                }
+                            </div>
+                            }
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" formControlName="password"
+                                    placeholder="Enter your password"
+                                    [class.is-invalid]="password?.invalid && password?.touched">
+                            </div>
+                            @if (password?.invalid && password?.touched) {
+                            <div class="invalid-feedback d-block">
+                                @if (password?.errors?.['required']) {
+                                Password is required
+                                }
+                                @if (password?.errors?.['minlength']) {
+                                Password must be at least 4 characters
+                                }
+                            </div>
+                            }
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg" [disabled]="isLoading()">
+                                @if (isLoading()) {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span>
+                                Signing in...
+                                } @else {
+                                Sign In
+                                }
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted small">
+                            Demo credentials: Any username and password (min 3 and 4 characters)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

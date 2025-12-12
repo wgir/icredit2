@@ -1,0 +1,1 @@
+Buid a front angular application taking as reference the file Requirements.md and following the rules defined  in Rules.md

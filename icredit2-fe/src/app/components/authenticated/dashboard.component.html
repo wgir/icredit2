@@ -1,0 +1,161 @@
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 fw-bold">Dashboard</h1>
+            @if (authService.currentUser(); as user) {
+            <p class="text-muted">Welcome back, {{ user.username }}!</p>
+            }
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Total Loans</p>
+                            <h3 class="fw-bold mb-0">{{ stats().totalLoans }}</h3>
+                        </div>
+                        <div class="stat-icon bg-primary bg-gradient">
+                            <i class="bi bi-wallet2 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Active Loans</p>
+                            <h3 class="fw-bold mb-0">{{ stats().activeLoans }}</h3>
+                        </div>
+                        <div class="stat-icon bg-success bg-gradient">
+                            <i class="bi bi-graph-up text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Credit Score</p>
+                            <h3 class="fw-bold mb-0">
+                                {{ stats().creditScore }}
+                                <span class="badge bg-{{ creditScoreStatus().class }} ms-2 small">
+                                    {{ creditScoreStatus().label }}
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="stat-icon bg-info bg-gradient">
+                            <i class="bi bi-star text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Available Credit</p>
+                            <h3 class="fw-bold mb-0">${{ stats().availableCredit.toLocaleString() }}</h3>
+                        </div>
+                        <div class="stat-icon bg-warning bg-gradient">
+                            <i class="bi bi-credit-card text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 fw-bold">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Personal Loan Payment</h6>
+                                    <p class="text-muted small mb-0">Payment processed successfully</p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-0 fw-bold text-success">-$500.00</p>
+                                    <p class="text-muted small mb-0">2 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Credit Card Cashback</h6>
+                                    <p class="text-muted small mb-0">Monthly rewards credited</p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-0 fw-bold text-primary">+$45.50</p>
+                                    <p class="text-muted small mb-0">5 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">Auto Loan Payment</h6>
+                                    <p class="text-muted small mb-0">Scheduled payment completed</p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-0 fw-bold text-success">-$350.00</p>
+                                    <p class="text-muted small mb-0">1 week ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="mb-0 fw-bold">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Apply for New Loan
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-cash-coin me-2"></i>
+                            Make a Payment
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-file-text me-2"></i>
+                            View Statements
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-headset me-2"></i>
+                            Contact Support
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

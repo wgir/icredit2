@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: icredit2-be
+  datasource:
+    url: jdbc:mysql://localhost:3306/tmp_icredit2
+    username: root
+    password: t5xsm+kt8A
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        column_ordering_strategy: legacy
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000 # 24 hours
+  refresh-expiration: 2592000000 # 30 days
