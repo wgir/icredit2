@@ -26,3 +26,184 @@ Here is the controller:
 CompanyController
 
 Generate only the test class. Do not rewrite the controller.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+You are an expert in Java 21, Spring Boot 3, JUnit 5, and Mockito.
+Generate a complete and high-quality UNIT TEST for the following Spring Boot Service class.
+
+Requirements:
+1. Use JUnit 5.
+2. Use Mockito for mocking dependencies.
+3. Use @ExtendWith(MockitoExtension.class).
+4. Use @Mock and @InjectMocks annotations.
+5. Include Arrange–Act–Assert structure in each test.
+6. Test all public methods.
+7. Include test cases for:
+    - Success scenarios
+    - Error or exceptional scenarios
+    - Boundary conditions or edge cases
+    - Optional empty cases (if applicable)
+8. Use clear and descriptive method names using 'shouldXyzWhenAbc' convention.
+9. Verify interactions with mocked dependencies using Mockito verify().
+10. Ensure no unnecessary integration logic is included.
+11. Include full import statements.
+12. DO NOT rewrite the service code; only generate the test class.
+
+Here is the service:
+
+<<<PASTE YOUR SERVICE CLASS HERE>>>
+
+Generate only the test class.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+You are an expert in Java 21, Spring Boot 3, Hibernate, JPA, and JUnit 5.
+Generate a complete and high-quality repository test for the following Spring Data JPA repository.
+
+Requirements:
+1. Use @DataJpaTest to load only JPA components.
+2. Use JUnit 5.
+3. Use H2 or an in-memory database.
+4. Autowire:
+    - The repository under test
+    - TestEntityManager
+5. Insert sample records using TestEntityManager for setup.
+6. Include tests for:
+    - Save operations
+    - Find operations (findById, findAll, findByXyz if exists)
+    - Update operations
+    - Delete operations
+    - Query methods (custom queries or JPQL)
+    - Edge cases (empty results, not found, constraints)
+7. Use AssertJ for assertions.
+8. Clear, descriptive test method names:
+       shouldXyzWhenAbc
+9. Ensure correct transactional behavior.
+10. Include all necessary import statements.
+11. Do NOT rewrite the repository; only generate the test class.
+
+Here is the repository:
+
+<<<PASTE YOUR REPOSITORY CODE HERE>>>
+
+Generate only the test class.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+You are an expert in Java 21, Spring Boot 3, JUnit 5, Testcontainers, PostgreSQL,
+MockMvc, and integration testing with real infrastructure.
+
+Generate a full integration test for the following Spring Boot component
+(controller, service, repository, or full flow).
+
+Requirements:
+1. Use JUnit 5.
+2. Use @Testcontainers and @Container.
+3. Use a PostgreSQLContainer configured as:
+       org.testcontainers.containers.PostgreSQLContainer<>("postgres:16")
+4. Automatically start and stop containers for each test class.
+5. Integrate the container with Spring Boot using @DynamicPropertySource to override:
+       spring.datasource.url
+       spring.datasource.username
+       spring.datasource.password
+6. Load the full Spring context using:
+       @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+7. If testing controllers:
+       - Use MockMvc (autoconfigure it with @AutoConfigureMockMvc)
+       - Test success, validation errors, not found, conflict, etc.
+8. If testing repositories:
+       - Test data persistence end to end
+       - Use Flyway/Liquibase migrations if present
+9. Use AssertJ for assertions.
+10. Use clean test method names following the `shouldXyzWhenAbc` convention.
+11. Insert test data using SQL scripts, @Sql annotations, or repository saves.
+12. Ensure tests run fully isolated and idempotent.
+13. Include all necessary imports.
+14. Do NOT rewrite the provided component; only generate the test class.
+
+Here is the component you must test:
+
+<<<PASTE YOUR COMPONENT HERE>>>
+
+Generate only the test class.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+You are an expert in Java 21, Spring Boot 3, JPA, Hibernate, JPQL, and JUnit 5.
+Generate a complete and high-quality test class for the following Spring Data JPA repository,
+which contains custom @Query JPQL methods.
+
+Requirements:
+1. Use @DataJpaTest (load only JPA and Hibernate components).
+2. Use an embedded H2 database.
+3. Autowire:
+       - The repository under test
+       - TestEntityManager
+4. Insert sample data using TestEntityManager for all test scenarios.
+5. Focus on fully testing the JPQL queries, including:
+       - String parameters
+       - Numeric parameters
+       - Date ranges
+       - Optional parameters (if applicable)
+       - Joins (if the JPQL contains JOIN)
+       - Sorting and pagination (Pageable) if used
+       - Filters in WHERE clauses
+       - NULL vs NOT NULL conditions
+       - LIKE, IN, BETWEEN, ORDER BY operations
+       - Edge cases (empty results, no matches, invalid parameters)
+6. Use AssertJ for fluent assertions.
+7. Use clean test method names following the “shouldXyzWhenAbc” convention.
+8. Validate:
+       - Correct number of rows returned
+       - Correct entity field values
+       - Ordering (if applicable)
+       - Pagination metadata (if applicable)
+9. Include ANY needed imports.
+10. Only generate the test class—do NOT rewrite the repository code.
+
+Here is the repository interface:
+
+<<<PASTE YOUR REPOSITORY CODE HERE>>>
+
+Generate only the test class.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+You are an expert in Spring Boot 3, Spring Security 6, Java 21, JWT, JUnit 5, and MockMvc.
+
+Generate a complete test class for the following controller/service,
+mocking JWT authentication so that the tests run WITHOUT requiring a real token.
+
+Requirements:
+1. Use JUnit 5.
+2. Use MockMvc for controller tests (or adapt to the given component).
+3. Disable or mock Spring Security using one of these patterns:
+       - @WithMockUser
+       - @WithSecurityContext
+       - SecurityMockMvcRequestPostProcessors.jwt()
+       - Custom JwtAuthenticationToken
+       - Or a custom SecurityFilterChain override
+4. If using MockMvc:
+       - Use the request builder: mockMvc.perform(get/post/put/...)
+       - Attach mocked JWT using: jwt().authorities(), jwt().jwt(jwt -> ...)
+5. If the controller uses @PreAuthorize or role-based access:
+       - Provide tests for authorized and unauthorized access.
+       - Mock authorities and roles (e.g., ROLE_ADMIN, SCOPE_READ).
+6. If the controller extracts fields from JWT (email, userId, roles):
+       - Mock claims accordingly.
+7. Include clear test method names using "shouldXyzWhenAbc" convention.
+8. Validate:
+       - HTTP status code
+       - JSON body
+       - Security behavior (403, 401 cases)
+9. Include all necessary imports.
+10. DO NOT rewrite the original component—only generate the test class.
+
+Here is the component requiring JWT authentication:
+
+AuthController
+
+Generate only the test class.

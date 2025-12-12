@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.icredit2.be.api.controller.CompanyControllerTest" time="3.737" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.icredit2.be.service.CompanyServiceTest" time="0.206" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -65,36 +65,6 @@
     <property name="java.class.version" value="65.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[icredit2-be] "/>
   </properties>
-  <testcase name="shouldReturnInternalServerErrorWhenUnexpectedExceptionOccurs" classname="com.icredit2.be.api.controller.CompanyControllerTest" time="0.201">
-    <system-out><![CDATA[16:08:04.469 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.icredit2.be.api.controller.CompanyControllerTest]: CompanyControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-16:08:04.584 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.icredit2.be.ICredit2BeApplication for test class com.icredit2.be.api.controller.CompanyControllerTest
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::                (v3.4.0)
-
-2025-12-12T16:08:04.976-05:00  INFO 22012 --- [icredit2-be] [           main] c.i.b.a.c.CompanyControllerTest          : Starting CompanyControllerTest using Java 21.0.8 with PID 22012 (started by Lenovo in C:\Users\Lenovo\Documents\Proyectos\iCredit_v2.0\icredit2-be)
-2025-12-12T16:08:04.977-05:00  INFO 22012 --- [icredit2-be] [           main] c.i.b.a.c.CompanyControllerTest          : No active profile set, falling back to 1 default profile: "default"
-2025-12-12T16:08:07.512-05:00  INFO 22012 --- [icredit2-be] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2025-12-12T16:08:07.772-05:00  INFO 22012 --- [icredit2-be] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-12-12T16:08:07.774-05:00  INFO 22012 --- [icredit2-be] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-12-12T16:08:07.775-05:00  INFO 22012 --- [icredit2-be] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2025-12-12T16:08:07.815-05:00  INFO 22012 --- [icredit2-be] [           main] c.i.b.a.c.CompanyControllerTest          : Started CompanyControllerTest in 3.17 seconds (process running for 3.87)
-2025-12-12T16:08:07.939-05:00 ERROR 22012 --- [icredit2-be] [           main] c.i.b.a.e.GlobalExceptionHandler         : Unhandled exception
-]]></system-out>
-    <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
-WARNING: A Java agent has been loaded dynamically (C:\Users\Lenovo\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.10\byte-buddy-agent-1.15.10.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-]]></system-err>
-  </testcase>
-  <testcase name="shouldReturnNotFoundWhenIdDoesNotExist" classname="com.icredit2.be.api.controller.CompanyControllerTest" time="0.008"/>
-  <testcase name="shouldReturnBadRequestWhenIdIsInvalid" classname="com.icredit2.be.api.controller.CompanyControllerTest" time="0.007"/>
-  <testcase name="shouldReturnCompanyWhenIdExists" classname="com.icredit2.be.api.controller.CompanyControllerTest" time="0.038"/>
+  <testcase name="shouldReturnCompanyResponseWhenIdExists" classname="com.icredit2.be.service.CompanyServiceTest" time="0.2"/>
+  <testcase name="shouldThrowResourceNotFoundExceptionWhenIdDoesNotExist" classname="com.icredit2.be.service.CompanyServiceTest" time="0.004"/>
 </testsuite>
