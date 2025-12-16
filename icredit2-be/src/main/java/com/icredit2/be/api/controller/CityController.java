@@ -33,7 +33,7 @@ public class CityController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('read_city')")
+    // @PreAuthorize("hasAuthority('read_city')")
     public List<CityDtos.CityResponse> list() {
         return cityService.findAll();
     }

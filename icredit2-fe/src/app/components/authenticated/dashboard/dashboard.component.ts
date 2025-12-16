@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 interface DashboardStats {
     totalLoans: number;

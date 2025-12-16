@@ -1,3 +1,6 @@
+
+Help me to define a prompt to develop a new feature for existent company application for implement a CRUD of new entity city, each city belong to company table.
+
 # City CRUD Feature – Spring Boot + JPA (SDD, Company from JWT)
 
 ## 1️⃣ AI Prompt (Spring Boot + JPA + MySQL)
@@ -247,3 +250,7 @@ public class CityController {
 - Strong multi-tenant isolation
 - JWT-driven security
 - SDD-aligned and production-ready
+
+
+
+implement the City CRUD Feature related in ./Prompts/city-crud-spring-boot-sdd-jwt.md

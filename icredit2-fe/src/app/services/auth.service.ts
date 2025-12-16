@@ -33,7 +33,7 @@ export class AuthService {
     private checkAuthStatus(): void {
         if (!this.isBrowser) return;
 
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem('access_token');
         const userStr = localStorage.getItem('current_user');
 
         if (token && userStr) {
@@ -56,8 +56,8 @@ export class AuthService {
             tap(response => {
                 // Assuming the response contains a token and potentially user details
                 // Adjust this based on actual backend response structure
-                if (this.isBrowser && response.token) {
-                    localStorage.setItem('auth_token', response.token);
+                if (this.isBrowser && response.access_token) {
+                    localStorage.setItem('access_token', response.access_token);
                     if (response.user) {
                         localStorage.setItem('current_user', JSON.stringify(response.user));
                         this.currentUserSignal.set(response.user);
@@ -72,7 +72,7 @@ export class AuthService {
     logout(): void {
         // Clear auth data (only in browser)
         if (this.isBrowser) {
-            localStorage.removeItem('auth_token');
+            localStorage.removeItem('access_token');
             localStorage.removeItem('current_user');
         }
 
@@ -86,6 +86,6 @@ export class AuthService {
 
     getToken(): string | null {
         if (!this.isBrowser) return null;
-        return localStorage.getItem('auth_token');
+        return localStorage.getItem('access_token');
     }
 }
