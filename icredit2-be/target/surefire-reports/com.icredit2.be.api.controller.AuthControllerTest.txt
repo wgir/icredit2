@@ -1,18 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.icredit2.be.api.controller.AuthControllerTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 3.938 s <<< FAILURE! -- in com.icredit2.be.api.controller.AuthControllerTest
-com.icredit2.be.api.controller.AuthControllerTest.shouldRegisterCompanySuccessfully -- Time elapsed: 0.402 s <<< FAILURE!
-java.lang.AssertionError: 
-JSON path "$.tokens.access_token"
-Expected: is "access-token"
-     but: was "access-token1"
-	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
-	at org.springframework.test.util.JsonPathExpectationsHelper.assertValue(JsonPathExpectationsHelper.java:107)
-	at org.springframework.test.web.servlet.result.JsonPathResultMatchers.lambda$value$0(JsonPathResultMatchers.java:88)
-	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
-	at com.icredit2.be.api.controller.AuthControllerTest.shouldRegisterCompanySuccessfully(AuthControllerTest.java:79)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.244 s -- in com.icredit2.be.api.controller.AuthControllerTest

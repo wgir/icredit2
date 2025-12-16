@@ -40,18 +40,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    /*
-     * private UserDetails loadByEmail(String email) {
-     * // Resolve Company by ID only
-     * 
-     * User user = userRepository.findByEmail(email)
-     * .orElseThrow(() -> new UsernameNotFoundException(
-     * "User not found: " + email));
-     * 
-     * return new CustomUserDetails(user);
-     * }
-     */
-
     private boolean isValidUUID(String str) {
         try {
             UUID.fromString(str);

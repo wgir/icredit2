@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.icredit2.be.api.controller.CityControllerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.746 s -- in com.icredit2.be.api.controller.CityControllerTest

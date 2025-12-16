@@ -23,7 +23,7 @@ Requirements:
 
 Here is the controller:
 
-CompanyController
+CityController
 
 Generate only the test class. Do not rewrite the controller.
 
@@ -52,7 +52,7 @@ Requirements:
 
 Here is the service:
 
-<<<PASTE YOUR SERVICE CLASS HERE>>>
+CityService
 
 Generate only the test class.
 
@@ -86,7 +86,7 @@ Requirements:
 
 Here is the repository:
 
-<<<PASTE YOUR REPOSITORY CODE HERE>>>
+CityRepository
 
 Generate only the test class.
 

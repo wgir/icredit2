@@ -1,0 +1,7 @@
+com\icredit2\be\api\controller\CityControllerTest.class
+com\icredit2\be\api\controller\CompanyControllerTest.class
+com\icredit2\be\service\CompanyServiceTest.class
+com\icredit2\be\domain\repository\CompanyRepositoryTest.class
+com\icredit2\be\api\controller\AuthControllerTest.class
+com\icredit2\be\service\CityServiceTest.class
+com\icredit2\be\domain\repository\CityRepositoryTest.class

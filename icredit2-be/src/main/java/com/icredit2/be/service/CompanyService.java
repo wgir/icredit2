@@ -1,6 +1,7 @@
 package com.icredit2.be.service;
 
 import com.icredit2.be.api.dto.CompanyDtos;
+import com.icredit2.be.api.exception.ResourceNotFoundException;
 import com.icredit2.be.domain.model.Company;
 import com.icredit2.be.domain.repository.CompanyRepository;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class CompanyService {
 
     public CompanyDtos.CompanyResponse getCompany(UUID id) {
         Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new com.icredit2.be.api.exception.ResourceNotFoundException("Company not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
         return mapToResponse(company);
     }
 

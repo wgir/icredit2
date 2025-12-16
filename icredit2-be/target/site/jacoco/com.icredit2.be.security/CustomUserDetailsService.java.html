@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomUserDetailsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">icredit2-be</a> &gt; <a href="index.source.html" class="el_package">com.icredit2.be.security</a> &gt; <span class="el_source">CustomUserDetailsService.java</span></div><h1>CustomUserDetailsService.java</h1><pre class="source lang-java linenums">package com.icredit2.be.security;
+
+import com.icredit2.be.domain.model.User;
+import com.icredit2.be.domain.repository.UserRepository;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Expected format: email (globally unique) or UUID (for JWT flow)
+        // Strategy:
+        // 1. If username looks like a UUID, try to load by ID (for JWT flow).
+        // 2. Otherwise, treat it as an email and load by email.
+
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (isValidUUID(username)) {</span>
+<span class="nc" id="L28">            return loadByUserId(UUID.fromString(username));</span>
+        }
+
+        // Load by email (globally unique)
+<span class="nc" id="L32">        User user = userRepository.findByEmail(username)</span>
+<span class="nc" id="L33">                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found with email: &quot; + username));</span>
+<span class="nc" id="L34">        return new CustomUserDetails(user);</span>
+    }
+
+    private UserDetails loadByUserId(UUID userId) {
+<span class="nc" id="L38">        User user = userRepository.findById(userId)</span>
+<span class="nc" id="L39">                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;User not found with ID: &quot; + userId));</span>
+<span class="nc" id="L40">        return new CustomUserDetails(user);</span>
+    }
+
+    private boolean isValidUUID(String str) {
+        try {
+<span class="nc" id="L45">            UUID.fromString(str);</span>
+<span class="nc" id="L46">            return true;</span>
+<span class="nc" id="L47">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L48">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

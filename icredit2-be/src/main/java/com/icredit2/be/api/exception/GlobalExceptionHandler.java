@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @Slf4j
@@ -71,6 +72,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                "Access is denied",
+                null);
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(ResourceConflictException.class)
     public ResponseEntity<ErrorResponse> handleResourceConflict(ResourceConflictException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -82,7 +94,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler({ NoSuchElementException.class, EntityNotFoundException.class, ResourceNotFoundException.class })
+    @ExceptionHandler({ NoSuchElementException.class, EntityNotFoundException.class, ResourceNotFoundException.class,
+            org.springframework.web.servlet.resource.NoResourceFoundException.class })
     public ResponseEntity<ErrorResponse> handleNotFound(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
