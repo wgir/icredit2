@@ -18,7 +18,8 @@ export class CityFormComponent implements OnInit {
     private route = inject(ActivatedRoute);
 
     cityForm = this.fb.group({
-        name: ['', [Validators.required]]
+        name: ['', [Validators.required]],
+        active: [true]
     });
 
     isEditMode = signal(false);
@@ -31,7 +32,7 @@ export class CityFormComponent implements OnInit {
             this.cityService.getById(this.cityId).subscribe({
                 next: (city) => {
                     if (city) {
-                        this.cityForm.patchValue({ name: city.name });
+                        this.cityForm.patchValue({ name: city.name, active: city.active });
                     }
                 },
                 error: (err) => console.error('Error loading city', err)
@@ -42,7 +43,7 @@ export class CityFormComponent implements OnInit {
     onSubmit(): void {
         if (this.cityForm.invalid) return;
 
-        const cityData = { name: this.cityForm.value.name! };
+        const cityData = { name: this.cityForm.value.name!, active: this.cityForm.value.active! };
 
         if (this.isEditMode() && this.cityId) {
             this.cityService.update(this.cityId, cityData).subscribe({

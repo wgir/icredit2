@@ -34,16 +34,9 @@ export class AuthService {
         if (!this.isBrowser) return;
 
         const token = localStorage.getItem('access_token');
-        const userStr = localStorage.getItem('current_user');
 
-        if (token && userStr) {
-            try {
-                const user = JSON.parse(userStr);
-                this.isAuthenticatedSignal.set(true);
-                this.currentUserSignal.set(user);
-            } catch (error) {
-                this.logout();
-            }
+        if (token) {
+            this.isAuthenticatedSignal.set(true);
         }
     }
 

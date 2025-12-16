@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CityService } from '../../../../services/city.service';
 import { City } from '../../../../models/city.model';
@@ -13,10 +13,13 @@ import { City } from '../../../../models/city.model';
 })
 export class CityListComponent implements OnInit {
     private cityService = inject(CityService);
+    private platformId = inject(PLATFORM_ID);
     cities = signal<City[]>([]);
 
     ngOnInit(): void {
-        this.loadCities();
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadCities();
+        }
     }
 
     loadCities(): void {
