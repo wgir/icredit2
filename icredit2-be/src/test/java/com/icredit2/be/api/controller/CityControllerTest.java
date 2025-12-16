@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,8 +48,9 @@ class CityControllerTest {
         @Test
         void shouldCreateCityWhenRequestIsValid() throws Exception {
                 // Arrange
-                CityDtos.CityRequest request = new CityDtos.CityRequest("New City");
-                CityDtos.CityResponse response = new CityDtos.CityResponse(UUID.randomUUID(), "New City");
+                CityDtos.CityRequest request = new CityDtos.CityRequest("New City", true);
+                CityDtos.CityResponse response = new CityDtos.CityResponse(UUID.randomUUID(), "New City", true,
+                                LocalDateTime.now(), LocalDateTime.now());
 
                 when(cityService.create(any(CityDtos.CityRequest.class))).thenReturn(response);
 
@@ -64,7 +66,7 @@ class CityControllerTest {
         @Test
         void shouldReturnBadRequestWhenCreateRequestIsInvalid() throws Exception {
                 // Arrange
-                CityDtos.CityRequest request = new CityDtos.CityRequest(""); // Empty name
+                CityDtos.CityRequest request = new CityDtos.CityRequest("", true); // Empty name
 
                 // Act & Assert
                 mockMvc.perform(post("/v1/cities")
@@ -76,7 +78,7 @@ class CityControllerTest {
         @Test
         void shouldReturnConflictWhenCreateCityAlreadyExists() throws Exception {
                 // Arrange
-                CityDtos.CityRequest request = new CityDtos.CityRequest("Existing City");
+                CityDtos.CityRequest request = new CityDtos.CityRequest("Existing City", true);
 
                 when(cityService.create(any(CityDtos.CityRequest.class)))
                                 .thenThrow(new ResourceConflictException("City name already exists"));
@@ -93,8 +95,10 @@ class CityControllerTest {
         @Test
         void shouldReturnListOfCitiesWhenCitiesExist() throws Exception {
                 // Arrange
-                CityDtos.CityResponse city1 = new CityDtos.CityResponse(UUID.randomUUID(), "City 1");
-                CityDtos.CityResponse city2 = new CityDtos.CityResponse(UUID.randomUUID(), "City 2");
+                CityDtos.CityResponse city1 = new CityDtos.CityResponse(UUID.randomUUID(), "City 1", true,
+                                LocalDateTime.now(), LocalDateTime.now());
+                CityDtos.CityResponse city2 = new CityDtos.CityResponse(UUID.randomUUID(), "City 2", true,
+                                LocalDateTime.now(), LocalDateTime.now());
                 List<CityDtos.CityResponse> cities = List.of(city1, city2);
 
                 when(cityService.findAll()).thenReturn(cities);
@@ -113,7 +117,8 @@ class CityControllerTest {
         void shouldReturnCityWhenIdExists() throws Exception {
                 // Arrange
                 UUID cityId = UUID.randomUUID();
-                CityDtos.CityResponse response = new CityDtos.CityResponse(cityId, "My City");
+                CityDtos.CityResponse response = new CityDtos.CityResponse(cityId, "My City", true, LocalDateTime.now(),
+                                LocalDateTime.now());
 
                 when(cityService.findById(cityId)).thenReturn(response);
 
@@ -149,8 +154,9 @@ class CityControllerTest {
         void shouldUpdateCityWhenRequestIsValid() throws Exception {
                 // Arrange
                 UUID cityId = UUID.randomUUID();
-                CityDtos.CityRequest request = new CityDtos.CityRequest("Updated City");
-                CityDtos.CityResponse response = new CityDtos.CityResponse(cityId, "Updated City");
+                CityDtos.CityRequest request = new CityDtos.CityRequest("Updated City", true);
+                CityDtos.CityResponse response = new CityDtos.CityResponse(cityId, "Updated City", true,
+                                LocalDateTime.now(), LocalDateTime.now());
 
                 when(cityService.update(eq(cityId), any(CityDtos.CityRequest.class))).thenReturn(response);
 
@@ -166,7 +172,7 @@ class CityControllerTest {
         void shouldReturnNotFoundWhenUpdateNonExistentCity() throws Exception {
                 // Arrange
                 UUID cityId = UUID.randomUUID();
-                CityDtos.CityRequest request = new CityDtos.CityRequest("Updated City");
+                CityDtos.CityRequest request = new CityDtos.CityRequest("Updated City", true);
 
                 when(cityService.update(eq(cityId), any(CityDtos.CityRequest.class)))
                                 .thenThrow(new ResourceNotFoundException("City not found"));

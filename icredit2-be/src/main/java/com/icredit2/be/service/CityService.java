@@ -65,6 +65,7 @@ public class CityService {
                 .orElseThrow(() -> new ResourceNotFoundException("City not found"));
 
         city.setName(request.name());
+        city.setActive(request.active());
         return map(city); // save is implicit in transaction, but explicit save is fine too.
     }
 
@@ -77,6 +78,7 @@ public class CityService {
     }
 
     private CityDtos.CityResponse map(City city) {
-        return new CityDtos.CityResponse(city.getId(), city.getName());
+        return new CityDtos.CityResponse(city.getId(), city.getName(), city.isActive(), city.getCreatedAt(),
+                city.getUpdatedAt());
     }
 }

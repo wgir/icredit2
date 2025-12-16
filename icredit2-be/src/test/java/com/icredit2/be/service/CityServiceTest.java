@@ -46,7 +46,7 @@ class CityServiceTest {
         // Arrange
         UUID companyId = UUID.randomUUID();
         String cityName = "New City";
-        CityDtos.CityRequest request = new CityDtos.CityRequest(cityName);
+        CityDtos.CityRequest request = new CityDtos.CityRequest(cityName, true);
         Company company = new Company();
         company.setId(companyId);
 
@@ -75,7 +75,7 @@ class CityServiceTest {
     void shouldThrowNotFoundExceptionWhenCreatingAndCompanyNotFound() {
         // Arrange
         UUID companyId = UUID.randomUUID();
-        CityDtos.CityRequest request = new CityDtos.CityRequest("City");
+        CityDtos.CityRequest request = new CityDtos.CityRequest("City", true);
 
         when(companyContext.getCompanyId()).thenReturn(companyId);
         when(companyRepository.findById(companyId)).thenReturn(Optional.empty());
@@ -90,7 +90,7 @@ class CityServiceTest {
         // Arrange
         UUID companyId = UUID.randomUUID();
         String cityName = "Existing City";
-        CityDtos.CityRequest request = new CityDtos.CityRequest(cityName);
+        CityDtos.CityRequest request = new CityDtos.CityRequest(cityName, true);
         Company company = new Company();
         company.setId(companyId);
 
@@ -182,8 +182,9 @@ class CityServiceTest {
         UUID companyId = UUID.randomUUID();
         UUID cityId = UUID.randomUUID();
         String newName = "Updated Name";
-        CityDtos.CityRequest request = new CityDtos.CityRequest(newName);
-        City existingCity = City.builder().id(cityId).name("Old Name").build();
+        boolean newActive = false;
+        CityDtos.CityRequest request = new CityDtos.CityRequest(newName, newActive);
+        City existingCity = City.builder().id(cityId).name("Old Name").active(true).build();
 
         when(companyContext.getCompanyId()).thenReturn(companyId);
         when(cityRepository.findByIdAndCompanyId(cityId, companyId)).thenReturn(Optional.of(existingCity));
@@ -195,7 +196,8 @@ class CityServiceTest {
         assertNotNull(response);
         assertEquals(cityId, response.id());
         assertEquals(newName, response.name());
-        assertEquals(newName, existingCity.getName()); // Verify object state changed
+        assertEquals(newName, existingCity.getName());
+        assertEquals(newActive, response.active());
     }
 
     @Test
@@ -203,7 +205,7 @@ class CityServiceTest {
         // Arrange
         UUID companyId = UUID.randomUUID();
         UUID cityId = UUID.randomUUID();
-        CityDtos.CityRequest request = new CityDtos.CityRequest("Name");
+        CityDtos.CityRequest request = new CityDtos.CityRequest("Name", true);
 
         when(companyContext.getCompanyId()).thenReturn(companyId);
         when(cityRepository.findByIdAndCompanyId(cityId, companyId)).thenReturn(Optional.empty());
