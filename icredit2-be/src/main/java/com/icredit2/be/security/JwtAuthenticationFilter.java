@@ -31,12 +31,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userUuid; // We use UUID as subject
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+        } else {
+            String cookieJwt = null;
+            if (request.getCookies() != null) {
+                for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                    if ("jwt".equals(cookie.getName())) {
+                        cookieJwt = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+            jwt = cookieJwt;
+        }
+
+        if (jwt == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
         String subject = jwtService.extractUsername(jwt); // This extracts 'sub' claim
         userUuid = subject;
 

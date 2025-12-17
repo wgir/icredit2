@@ -5,6 +5,8 @@ import com.icredit2.be.api.dto.CompanyDtos;
 import com.icredit2.be.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,14 +21,41 @@ public class AuthController {
 
     @PostMapping(&quot;/v1/companies/register&quot;)
     public ResponseEntity&lt;CompanyDtos.CompanyRegistrationResponse&gt; registerCompany(
-            @RequestBody @Valid CompanyDtos.CompanyRegistrationRequest request) {
-<span class="fc" id="L23">        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registerCompany(request));</span>
+            @RequestBody @Valid CompanyDtos.CompanyRegistrationRequest request,
+            HttpServletResponse response) {
+<span class="fc" id="L26">        CompanyDtos.CompanyRegistrationResponse registrationResponse = authService.registerCompany(request);</span>
+
+<span class="fc" id="L28">        setJwtCookie(response, registrationResponse.tokens().accessToken(),</span>
+<span class="fc" id="L29">                registrationResponse.tokens().expiresIn() / 1000);</span>
+
+<span class="fc" id="L31">        return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);</span>
     }
 
     @PostMapping(&quot;/v1/auth/login&quot;)
     public ResponseEntity&lt;AuthDtos.AuthResponse&gt; login(
-            @RequestBody @Valid AuthDtos.LoginRequest request) {
-<span class="fc" id="L29">        return ResponseEntity.ok(authService.login(request));</span>
+            @RequestBody @Valid AuthDtos.LoginRequest request,
+            HttpServletResponse response) {
+<span class="fc" id="L38">        AuthDtos.AuthResponse authResponse = authService.login(request);</span>
+
+<span class="fc" id="L40">        setJwtCookie(response, authResponse.accessToken(), authResponse.expiresIn() / 1000);</span>
+
+<span class="fc" id="L42">        return ResponseEntity.ok(authResponse);</span>
     }
+
+    @PostMapping(&quot;/v1/auth/logout&quot;)
+    public ResponseEntity&lt;Void&gt; logout(HttpServletResponse response) {
+<span class="fc" id="L47">        setJwtCookie(response, &quot;&quot;, 0);</span>
+
+<span class="fc" id="L49">        return ResponseEntity.ok().build();</span>
+    }
+
+    private void setJwtCookie(HttpServletResponse response, String accessToken, long maxAgeSeconds) {
+<span class="fc" id="L53">        Cookie jwtCookie = new Cookie(&quot;jwt&quot;, accessToken);</span>
+<span class="fc" id="L54">        jwtCookie.setHttpOnly(true);</span>
+<span class="fc" id="L55">        jwtCookie.setSecure(false); // TODO: Set to true in production</span>
+<span class="fc" id="L56">        jwtCookie.setPath(&quot;/&quot;);</span>
+<span class="fc" id="L57">        jwtCookie.setMaxAge((int) maxAgeSeconds);</span>
+<span class="fc" id="L58">        response.addCookie(jwtCookie);</span>
+<span class="fc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

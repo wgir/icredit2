@@ -52,7 +52,7 @@ public class CityService {
     @Transactional(readOnly = true)
     public CityDtos.CityResponse findById(UUID cityId) {
 <span class="fc" id="L54">        return cityRepository.findByIdAndCompanyId(</span>
-                cityId,
+<span class="fc" id="L55">                cityId,</span>
 <span class="fc" id="L56">                companyContext.getCompanyId())</span>
 <span class="fc" id="L57">                .map(this::map)</span>
 <span class="fc" id="L58">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;City not found&quot;));</span>
@@ -60,24 +60,26 @@ public class CityService {
 
     public CityDtos.CityResponse update(UUID cityId, CityDtos.CityRequest request) {
 <span class="fc" id="L62">        City city = cityRepository.findByIdAndCompanyId(</span>
-                cityId,
+<span class="fc" id="L63">                cityId,</span>
 <span class="fc" id="L64">                companyContext.getCompanyId())</span>
 <span class="fc" id="L65">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;City not found&quot;));</span>
 
 <span class="fc" id="L67">        city.setName(request.name());</span>
-<span class="fc" id="L68">        return map(city); // save is implicit in transaction, but explicit save is fine too.</span>
+<span class="fc" id="L68">        city.setActive(request.active());</span>
+<span class="fc" id="L69">        return map(city); // save is implicit in transaction, but explicit save is fine too.</span>
     }
 
     public void delete(UUID cityId) {
-<span class="fc" id="L72">        City city = cityRepository.findByIdAndCompanyId(</span>
-                cityId,
-<span class="fc" id="L74">                companyContext.getCompanyId())</span>
-<span class="fc" id="L75">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;City not found&quot;));</span>
-<span class="fc" id="L76">        cityRepository.delete(city);</span>
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L73">        City city = cityRepository.findByIdAndCompanyId(</span>
+<span class="fc" id="L74">                cityId,</span>
+<span class="fc" id="L75">                companyContext.getCompanyId())</span>
+<span class="fc" id="L76">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;City not found&quot;));</span>
+<span class="fc" id="L77">        cityRepository.delete(city);</span>
+<span class="fc" id="L78">    }</span>
 
     private CityDtos.CityResponse map(City city) {
-<span class="fc" id="L80">        return new CityDtos.CityResponse(city.getId(), city.getName());</span>
+<span class="fc" id="L81">        return new CityDtos.CityResponse(city.getId(), city.getName(), city.isActive(), city.getCreatedAt(),</span>
+<span class="fc" id="L82">                city.getUpdatedAt());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -27,34 +27,33 @@ public class CityController {
     private final CityService cityService;
 
     @PostMapping
-    @PreAuthorize(&quot;hasAuthority('perm:create_city')&quot;)
     public ResponseEntity&lt;CityDtos.CityResponse&gt; create(@Valid @RequestBody CityDtos.CityRequest request) {
-<span class="fc" id="L32">        return ResponseEntity.status(HttpStatus.CREATED)</span>
-<span class="fc" id="L33">                .body(cityService.create(request));</span>
+<span class="fc" id="L31">        return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="fc" id="L32">                .body(cityService.create(request));</span>
     }
 
     @GetMapping
-    @PreAuthorize(&quot;hasAuthority('read_city')&quot;)
+    // @PreAuthorize(&quot;hasAuthority('read_city')&quot;)
     public List&lt;CityDtos.CityResponse&gt; list() {
-<span class="fc" id="L39">        return cityService.findAll();</span>
+<span class="fc" id="L38">        return cityService.findAll();</span>
     }
 
     @GetMapping(&quot;/{id}&quot;)
     public CityDtos.CityResponse get(@PathVariable UUID id) {
-<span class="fc" id="L44">        return cityService.findById(id);</span>
+<span class="fc" id="L43">        return cityService.findById(id);</span>
     }
 
     @PutMapping(&quot;/{id}&quot;)
     public CityDtos.CityResponse update(
             @PathVariable UUID id,
             @Valid @RequestBody CityDtos.CityRequest request) {
-<span class="fc" id="L51">        return cityService.update(id, request);</span>
+<span class="fc" id="L50">        return cityService.update(id, request);</span>
     }
 
     @DeleteMapping(&quot;/{id}&quot;)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) {
-<span class="fc" id="L57">        cityService.delete(id);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L56">        cityService.delete(id);</span>
+<span class="fc" id="L57">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

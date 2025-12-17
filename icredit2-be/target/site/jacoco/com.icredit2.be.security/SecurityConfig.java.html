@@ -17,6 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,35 +33,49 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-<span class="nc" id="L32">        http</span>
-<span class="nc" id="L33">                .csrf(AbstractHttpConfigurer::disable)</span>
-<span class="nc" id="L34">                .authorizeHttpRequests(auth -&gt; auth</span>
-<span class="nc" id="L35">                        .requestMatchers(&quot;/v1/auth/**&quot;, &quot;/v1/companies/register&quot;).permitAll()</span>
-<span class="nc" id="L36">                        .anyRequest().authenticated())</span>
-<span class="nc" id="L37">                .sessionManagement(session -&gt; session</span>
-<span class="nc" id="L38">                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))</span>
-<span class="nc" id="L39">                .authenticationProvider(authenticationProvider())</span>
-<span class="nc" id="L40">                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);</span>
+<span class="nc" id="L36">        http</span>
+<span class="nc" id="L37">                .cors(cors -&gt; cors.configurationSource(corsConfigurationSource()))</span>
+<span class="nc" id="L38">                .csrf(AbstractHttpConfigurer::disable)</span>
+<span class="nc" id="L39">                .authorizeHttpRequests(auth -&gt; auth</span>
+<span class="nc" id="L40">                        .requestMatchers(&quot;/v1/auth/**&quot;, &quot;/v1/companies/register&quot;).permitAll()</span>
+<span class="nc" id="L41">                        .anyRequest().authenticated())</span>
+<span class="nc" id="L42">                .sessionManagement(session -&gt; session</span>
+<span class="nc" id="L43">                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))</span>
+<span class="nc" id="L44">                .authenticationProvider(authenticationProvider())</span>
+<span class="nc" id="L45">                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);</span>
 
-<span class="nc" id="L42">        return http.build();</span>
+<span class="nc" id="L47">        return http.build();</span>
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+<span class="nc" id="L52">        CorsConfiguration configuration = new CorsConfiguration();</span>
+<span class="nc" id="L53">        configuration.setAllowedOrigins(List.of(&quot;http://localhost:4200&quot;)); // Adjust specifically for frontend</span>
+<span class="nc" id="L54">        configuration.setAllowedMethods(List.of(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
+<span class="nc" id="L55">        configuration.setAllowedHeaders(List.of(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
+<span class="nc" id="L56">        configuration.setAllowCredentials(true);</span>
+
+<span class="nc" id="L58">        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
+<span class="nc" id="L59">        source.registerCorsConfiguration(&quot;/**&quot;, configuration);</span>
+<span class="nc" id="L60">        return source;</span>
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-<span class="nc" id="L47">        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();</span>
-<span class="nc" id="L48">        authProvider.setUserDetailsService(userDetailsService);</span>
-<span class="nc" id="L49">        authProvider.setPasswordEncoder(passwordEncoder());</span>
-<span class="nc" id="L50">        return authProvider;</span>
+<span class="nc" id="L65">        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();</span>
+<span class="nc" id="L66">        authProvider.setUserDetailsService(userDetailsService);</span>
+<span class="nc" id="L67">        authProvider.setPasswordEncoder(passwordEncoder());</span>
+<span class="nc" id="L68">        return authProvider;</span>
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-<span class="nc" id="L55">        return config.getAuthenticationManager();</span>
+<span class="nc" id="L73">        return config.getAuthenticationManager();</span>
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-<span class="nc" id="L60">        return new BCryptPasswordEncoder();</span>
+<span class="nc" id="L78">        return new BCryptPasswordEncoder();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
