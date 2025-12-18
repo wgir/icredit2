@@ -6,6 +6,8 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { REQUEST } from './app/tokens';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -13,16 +15,20 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
+ * Proxy API requests to backend
  */
+app.use('/v1', createProxyMiddleware({
+  target: 'http://localhost:8080',
+  changeOrigin: true,
+  // ensure cookies are passed
+  on: {
+    proxyReq: (proxyReq: any, req: any, res: any) => {
+      if (req.headers.cookie) {
+        proxyReq.setHeader('Cookie', req.headers.cookie);
+      }
+    }
+  }
+}));
 
 /**
  * Serve static files from /browser
@@ -40,7 +46,9 @@ app.use(
  */
 app.use((req, res, next) => {
   angularApp
-    .handle(req)
+    .handle(req, {
+      providers: [{ provide: REQUEST, useValue: req }]
+    })
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )

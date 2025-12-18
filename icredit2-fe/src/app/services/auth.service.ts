@@ -1,12 +1,12 @@
 import { Injectable, signal, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, tap, of, map } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface User {
-    username: string;
+    user_name: string;
     email: string;
 }
 
@@ -16,6 +16,8 @@ export interface User {
 export class AuthService {
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
+    private http = inject(HttpClient);
+    private router = inject(Router);
 
     // Signal to track authentication state
     private isAuthenticatedSignal = signal<boolean>(false);
@@ -25,19 +27,24 @@ export class AuthService {
     readonly isAuthenticated = this.isAuthenticatedSignal.asReadonly();
     readonly currentUser = this.currentUserSignal.asReadonly();
 
-    constructor(private router: Router, private http: HttpClient) {
-        // Check if user is already logged in (from localStorage)
-        this.checkAuthStatus();
+    constructor() {
+        // Initial check without blocking, useful for UI updates
+        this.checkAuth().subscribe();
     }
 
-    private checkAuthStatus(): void {
-        if (!this.isBrowser) return;
-
-        const token = localStorage.getItem('access_token');
-
-        if (token) {
-            this.isAuthenticatedSignal.set(true);
-        }
+    checkAuth(): Observable<boolean> {
+        return this.http.get<User>('/v1/auth/me').pipe(
+            tap(user => {
+                this.isAuthenticatedSignal.set(true);
+                this.currentUserSignal.set(user);
+            }),
+            map(() => true),
+            catchError(() => {
+                this.isAuthenticatedSignal.set(false);
+                this.currentUserSignal.set(null);
+                return of(false);
+            })
+        );
     }
 
     login(email: string, password: string): Observable<any> {
@@ -47,38 +54,16 @@ export class AuthService {
 
         return this.http.post<any>(url, body, { headers }).pipe(
             tap(response => {
-                // Assuming the response contains a token and potentially user details
-                // Adjust this based on actual backend response structure
-                if (this.isBrowser && response.access_token) {
-                    localStorage.setItem('access_token', response.access_token);
-                    if (response.user) {
-                        localStorage.setItem('current_user', JSON.stringify(response.user));
-                        this.currentUserSignal.set(response.user);
-                    }
-                }
-
                 this.isAuthenticatedSignal.set(true);
             })
         );
     }
 
     logout(): void {
-        // Clear auth data (only in browser)
-        if (this.isBrowser) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('current_user');
-        }
-
-        // Update signals
-        this.isAuthenticatedSignal.set(false);
-        this.currentUserSignal.set(null);
-
-        // Navigate to home
-        this.router.navigate(['/home']);
-    }
-
-    getToken(): string | null {
-        if (!this.isBrowser) return null;
-        return localStorage.getItem('access_token');
+        this.http.post('/v1/auth/logout', {}).subscribe(() => {
+            this.isAuthenticatedSignal.set(false);
+            this.currentUserSignal.set(null);
+            this.router.navigate(['/home']);
+        });
     }
 }

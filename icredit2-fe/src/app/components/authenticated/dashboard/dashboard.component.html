@@ -3,7 +3,7 @@
         <div class="col-12">
             <h1 class="h2 fw-bold">Dashboard</h1>
             @if (authService.currentUser(); as user) {
-            <p class="text-muted">Welcome back, {{ user.username }}!</p>
+            <p class="text-muted">Welcome back, {{ user.user_name }}!</p>
             }
         </div>
     </div>

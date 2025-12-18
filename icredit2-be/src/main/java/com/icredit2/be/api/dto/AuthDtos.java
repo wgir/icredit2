@@ -24,4 +24,9 @@ public class AuthDtos {
         public record LogoutRequest(
                         @JsonProperty("refresh_token") String refreshToken) {
         }
+
+        public record CurrentUserResponse(
+                        @JsonProperty("user_name") String userName,
+                        @JsonProperty("email") String email) {
+        }
 }

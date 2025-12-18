@@ -8,7 +8,7 @@
             </a>
             <div class="d-flex align-items-center text-white">
                 @if (authService.currentUser(); as user) {
-                <span class="me-3">Welcome, {{ user.username }}</span>
+                <span class="me-3">Welcome, {{ user.user_name }}</span>
                 }
                 <button class="btn btn-outline-light btn-sm" (click)="logout()">
                     Logout

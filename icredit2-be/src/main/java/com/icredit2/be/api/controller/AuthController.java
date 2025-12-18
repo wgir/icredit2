@@ -2,6 +2,7 @@ package com.icredit2.be.api.controller;
 
 import com.icredit2.be.api.dto.AuthDtos;
 import com.icredit2.be.api.dto.CompanyDtos;
+import com.icredit2.be.security.CustomUserDetails;
 import com.icredit2.be.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +44,24 @@ public class AuthController {
         setJwtCookie(response, authResponse.accessToken(), authResponse.expiresIn() / 1000);
 
         return ResponseEntity.ok(authResponse);
+    }
+
+    @GetMapping("/v1/auth/me")
+    public ResponseEntity<AuthDtos.CurrentUserResponse> getCurrentUser(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // Cast to CustomUserDetails to access the User object
+        if (userDetails instanceof CustomUserDetails customUserDetails) {
+            AuthDtos.CurrentUserResponse response = new AuthDtos.CurrentUserResponse(
+                    customUserDetails.getUser().getDisplayName(),
+                    customUserDetails.getUser().getEmail());
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping("/v1/auth/logout")

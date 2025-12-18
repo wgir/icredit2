@@ -44,10 +44,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/authenticated/dashboard/dashboard.component').then(m => m.DashboardComponent)
             },
             {
-                path: 'profile',
-                loadComponent: () => import('./components/authenticated/profile.component').then(m => m.ProfileComponent)
-            },
-            {
                 path: 'cities',
                 loadComponent: () => import('./components/authenticated/city/city-list/city-list.component').then(m => m.CityListComponent)
             },
